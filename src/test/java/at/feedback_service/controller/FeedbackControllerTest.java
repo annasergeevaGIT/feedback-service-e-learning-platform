@@ -78,9 +78,9 @@ class FeedbackControllerTest extends BaseIntegrationTest {
                     var courseRatingInfos = response.getCourseRatings();
                     assertThat(courseRatingInfos).hasSize(coursesWithFeedbacks.size());
                     courseRatingInfos.sort(Comparator.comparing(CourseRatingInfo::getCourseId));
-                    var allRatingsHaveReviews = allRatingsHaveFeedbacks();
+                    var allRatingsHaveFeedbacks = allRatingsHaveFeedbacks();
                     for (int i = 0; i <courseRatingInfos.size(); i++) {
-                        compareCourseInfo(allRatingsHaveReviews.get(i), courseRatingInfos.get(i));
+                        compareCourseInfo(allRatingsHaveFeedbacks.get(i), courseRatingInfos.get(i));
                     }
                 });
     }
@@ -124,7 +124,7 @@ class FeedbackControllerTest extends BaseIntegrationTest {
     }
 
     @Test
-    void getFeedbacksOfCourse_returnsEmptyListWithDefaultRating_whenMenuHasNoRFeedbacks() {
+    void getFeedbacksOfCourse_returnsEmptyListWithDefaultRating_whenCourseHasNoRFeedbacks() {
         long courseWithNoFeedbacks = 1000;
         webTestClient.get()
                 .uri(BASE_URL + "/course/" + courseWithNoFeedbacks + "?from=0&size=10&sortBy=date_asc")
@@ -169,10 +169,10 @@ class FeedbackControllerTest extends BaseIntegrationTest {
 
     @Test
     void getFeedback_returnsFeedback() {
-        var reviewId = getFeedbackIdByCourseId(COURSE_ONE);
+        var feedbackId = getFeedbackIdByCourseId(COURSE_ONE);
 
         webTestClient.get()
-                .uri(BASE_URL + "/" + reviewId)
+                .uri(BASE_URL + "/" + feedbackId)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(FeedbackResponse.class)
@@ -220,7 +220,7 @@ class FeedbackControllerTest extends BaseIntegrationTest {
     }
 
     @Test
-    void createReview_returnsConflictWhenUserTriesToSendSecondReviewToSameMenu() {
+    void createFeedback_returnsConflictWhenUserTriesToSendSecondFeedbackToSameCourse() {
         var request = createFeedbackRequest(COURSE_ONE, 5);
 
         webTestClient.post()

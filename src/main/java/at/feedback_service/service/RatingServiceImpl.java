@@ -25,7 +25,7 @@ public class RatingServiceImpl implements RatingService{
         repository.incrementRating(courseId, rate);
 
     }
-    //do not throw an error if the course has no reviews. Instead, the response returns default values — wilsonScore = 0.0, avgStars = 0.0.
+    //do not throw an error if the course has no feedbacks. Instead, the response returns default values — wilsonScore = 0.0, avgStars = 0.0.
     @Override
     public CourseRatingInfo getRatingOfCourse(Long courseId) {
         return repository.findRatingInfoByCourseId(courseId)

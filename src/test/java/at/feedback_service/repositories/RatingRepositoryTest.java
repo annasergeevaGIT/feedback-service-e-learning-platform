@@ -80,7 +80,7 @@ public class RatingRepositoryTest extends BaseTest {
     * with one thread rolling back its transaction while the other completes it. In this test, we manually manage transactions
     * using the standard PlatformTransactionManager bean, along with the TransactionDefinition interface,
     * which describes the standard Spring transaction properties, and its default implementation DefaultTransactionDefinition.
-    * To ensure the correct order of transaction start, a CountDownLatch is used. As in the previous test,
+    * To ensure the correct enrollment of transaction start, a CountDownLatch is used. As in the previous test,
     * we do not expect any exceptions — if any occur, the test should fail.
     */
     @Test

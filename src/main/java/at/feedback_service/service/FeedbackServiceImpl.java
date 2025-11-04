@@ -47,7 +47,7 @@ public class FeedbackServiceImpl implements FeedbackService{
         return feedbackRepository.findById(feedbackId)
                 .map(feedbackMapper::toFeedbackResponse)
                 .orElseThrow(() -> {
-                    var msg = "Review with id=%d not found.".formatted(feedbackId);
+                    var msg = "Feedback with id=%d not found.".formatted(feedbackId);
                     return new FeedbackServiceException(msg, HttpStatus.NOT_FOUND);
                 });
     }
@@ -55,8 +55,8 @@ public class FeedbackServiceImpl implements FeedbackService{
     @Override
     public List<FeedbackResponse> getFeedbackOfUser(String username, SortBy sort, int from, int size) {
         var pageable = getPageable(sort, from, size);
-        List<Feedback> reviews = feedbackRepository.findAllByCreatedBy(username, pageable);
-        return feedbackMapper.toFeedbackResponseList(reviews);
+        List<Feedback> feedbacks = feedbackRepository.findAllByCreatedBy(username, pageable);
+        return feedbackMapper.toFeedbackResponseList(feedbacks);
     }
 
     @Override

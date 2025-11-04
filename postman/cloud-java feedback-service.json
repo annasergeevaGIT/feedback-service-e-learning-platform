@@ -1,0 +1,453 @@
+{
+	"info": {
+		"_postman_id": "85a8ada8-7a5c-4120-a79c-a6011967f2ce",
+		"name": "cloud-java feedback-service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "14134951"
+	},
+	"item": [
+		{
+			"name": "Create Feedback By Alex Course 1 Copy",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-User-Name",
+						"value": "Alex",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"courseId\": 1,\n    \"comment\": \"Comment\",\n    \"rate\": 5\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8083/v1/feedbacks",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"v1",
+						"feedbacks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Feedback By Alex Course 2 Copy",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-User-Name",
+						"value": "Alex",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"courseId\": 2,\n    \"comment\": \"Comment\",\n    \"rate\": 5\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8083/v1/feedbacks",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"v1",
+						"feedbacks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Feedback By Alex Course 3 Copy",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-User-Name",
+						"value": "Alex",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"courseId\": 3,\n    \"comment\": \"Comment\",\n    \"rate\": 5\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8083/v1/feedbacks",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"v1",
+						"feedbacks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create feedback By John Course 1 Copy",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-User-Name",
+						"value": "John",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"courseId\": 1,\n    \"comment\": \"Comment\",\n    \"rate\": 5\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8083/v1/feedbacks",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"v1",
+						"feedbacks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create feedback By Michael Course 1 Copy",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-User-Name",
+						"value": "Michael",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"courseId\": 1,\n    \"comment\": \"Comment\",\n    \"rate\": 3\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8083/v1/feedbacks",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"v1",
+						"feedbacks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create feedback By Max Course 1 Copy",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-User-Name",
+						"value": "Max",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"courseId\": 1,\n    \"comment\": \"Comment\",\n    \"rate\": 2\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8083/v1/feedbacks",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"v1",
+						"feedbacks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create feedback By Phill Course 1 Copy",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-User-Name",
+						"value": "Phill",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"courseId\": 1,\n    \"comment\": \"Comment\",\n    \"rate\": 2\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8083/v1/feedbacks",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"v1",
+						"feedbacks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create feedback Fail Validation Copy",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-User-Name",
+						"value": "Alex",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"courseId\": 1,\n    \"comment\": \" \",\n    \"rate\": 5\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8083/v1/feedbacks",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"v1",
+						"feedbacks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create feedback Fail Repeatable Copy",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-User-Name",
+						"value": "Alex",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"courseId\": 1,\n    \"comment\": \"Comment\",\n    \"rate\": 4\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8083/v1/feedbacks",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"v1",
+						"feedbacks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get feedback 1",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8083/v1/feedbacks/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"v1",
+						"feedbacks",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get feedbacks of course 1",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8083/v1/feedbacks/course/1?from-0&size=10&sortBy=date_asc",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"v1",
+						"feedbacks",
+						"course",
+						"1"
+					],
+					"query": [
+						{
+							"key": "from-0",
+							"value": null
+						},
+						{
+							"key": "size",
+							"value": "10"
+						},
+						{
+							"key": "sortBy",
+							"value": "date_asc"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get feedbacks of Alex",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-User-Name",
+						"value": "Alex",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8083/v1/feedbacks/my?from=0&size=10&sortBy=date_asc",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"v1",
+						"feedbacks",
+						"my"
+					],
+					"query": [
+						{
+							"key": "from",
+							"value": "0"
+						},
+						{
+							"key": "size",
+							"value": "10"
+						},
+						{
+							"key": "sortBy",
+							"value": "date_asc"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get ratings of courses 1, 2, 3, 4, 5",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"courseIds\": [1,2,3,4,5]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8083/v1/feedbacks/ratings",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"v1",
+						"feedbacks",
+						"ratings"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

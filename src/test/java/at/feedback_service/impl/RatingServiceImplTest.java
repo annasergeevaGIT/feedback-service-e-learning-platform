@@ -40,7 +40,7 @@ class RatingServiceImplTest extends BaseIntegrationTest {
         concurrentlyIncrementEachRating20Times_incrementsRatingsCorrectly(nonExistentRating);
     }
 
-    //handles concurrent calls from multiple threads, updating different ratings for a course that already has user reviews
+    //handles concurrent calls from multiple threads, updating different ratings for a course that already has user feedbacks
     @Test
     void saveRating_updatesRatingCorrectly_whenMultipleConcurrentRequestsSaveDifferentRatingsToSameCourse() throws Exception {
         Rating existentRating = ratingCourseOne();
@@ -68,7 +68,7 @@ class RatingServiceImplTest extends BaseIntegrationTest {
         Rating rating = ratingRepository.findByCourseId(courseId).get();
         assertRatesEqual(rating, expectedRating);
     }
-    // concurrent calls from multiple threads, updating a single rating for a course that already has user reviews
+    // concurrent calls from multiple threads, updating a single rating for a course that already has user feedbacks
     @Test
     void saveRating_updatesRatingCorrectly_whenMultipleConcurrentRequestsSaveSameRatingToSameCourse() throws Exception {
         ExecutorService executor = Executors.newFixedThreadPool(12);
