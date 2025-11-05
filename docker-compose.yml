@@ -4,9 +4,9 @@ services:
     container_name: "config-server-e-learning-platform"
     environment:
       - THC_PATH=/actuator/health
-      - THC_PORT=8085
+      - THC_PORT=9095
     ports:
-      - "8085:8085"
+      - "9095:9095"
     healthcheck:
       test: [ "CMD", "/cnb/process/health-check" ]
       interval: 15s
@@ -23,7 +23,7 @@ services:
       config-server-e-learning-platform:
         condition: service_healthy
     ports:
-      - "8083:8083"
+      - "9093:9093"
     environment:
       - CONFIGSERVER_IMPORT=configserver:${CONFIG_SERVER_URL}
       - SPRING_CLOUD_CONFIG_FAIL_FAST=true
@@ -36,16 +36,16 @@ services:
     image: "postgres:16.1"
     container_name: "postgres-feedbacks"
     ports:
-      - "6433:6433"
+      - "5433:5433"
     environment:
       - POSTGRES_USER=${FEEDBACK_DB_USER}
       - POSTGRES_PASSWORD=${FEEDBACK_DB_PASSWORD}
       - POSTGRES_DB=feedback_service_db
-      - PGPORT=6433
+      - PGPORT=5433
     volumes:
       - db-feedbacks:/var/lib/postgresql/data
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready", "-p", "6433", "-d", "feedback_service_db" ]
+      test: [ "CMD-SHELL", "pg_isready", "-d", "feedback_service_db" ]
       interval: 30s
       timeout: 60s
       retries: 5
