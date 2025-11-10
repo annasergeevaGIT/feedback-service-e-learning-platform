@@ -39,7 +39,7 @@ services:
     ports:
       - "8761:8761"
     depends_on:
-      config-server:
+      config-server-e-learning-platform:
         condition: service_healthy
     environment:
       - CONFIGSERVER_IMPORT=configserver:${CONFIG_SERVER_URL}
