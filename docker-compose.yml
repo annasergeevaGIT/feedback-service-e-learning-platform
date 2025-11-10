@@ -31,6 +31,21 @@ services:
       - DB_USER=${FEEDBACK_DB_USER}
       - DB_PASSWORD=${FEEDBACK_DB_PASSWORD}
       - DB_URL=${FEEDBACK_DB_URL}
+      - DISCOVERY_SERVICE_URL=${DISCOVERY_SERVICE_URL}
+
+  discovery-service:
+    image: "discovery-service"
+    container_name: "discovery-service"
+    ports:
+      - "8761:8761"
+    depends_on:
+      config-server:
+        condition: service_healthy
+    environment:
+      - CONFIGSERVER_IMPORT=configserver:${CONFIG_SERVER_URL}
+      - SPRING_CLOUD_CONFIG_FAIL_FAST=true
+      - SPRING_PROFILES_ACTIVE=prod
+      - EUREKA_HOSTNAME=discovery-service
 
   postgres-feedbacks:
     image: "postgres:16.1"

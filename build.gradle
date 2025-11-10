@@ -47,6 +47,7 @@ dependencies {
 	implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${springdocVersion}"
 	implementation 'org.springframework.cloud:spring-cloud-starter-config' //config server
 	implementation 'org.springframework.retry:spring-retry' //config server
+	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'org.postgresql:postgresql'
 	annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"

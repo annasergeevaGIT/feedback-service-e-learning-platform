@@ -5,6 +5,10 @@ spring:
     username: user
     password: password
 
+eureka:
+  client:
+    enabled: false
+
 logging:
   level:
     org.springframework: DEBUG
