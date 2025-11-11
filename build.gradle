@@ -48,6 +48,8 @@ dependencies {
 	implementation 'org.springframework.cloud:spring-cloud-starter-config' //config server
 	implementation 'org.springframework.retry:spring-retry' //config server
 	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+	implementation 'io.micrometer:micrometer-tracing-bridge-brave'
+	implementation 'io.zipkin.reporter2:zipkin-reporter-brave'
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'org.postgresql:postgresql'
 	annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
