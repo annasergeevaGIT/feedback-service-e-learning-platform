@@ -6,12 +6,20 @@ import at.feedback_service.dto.GetRatingsRequest;
 import at.feedback_service.dto.RatedFeedbackResponse;
 import at.feedback_service.dto.RatingsResponse;
 import at.feedback_service.model.CourseRatingInfo;
+import at.feedback_service.testutil.AuthToken;
+import dasniko.testcontainers.keycloak.KeycloakContainer;
+import org.assertj.core.api.AssertionsForClassTypes;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.time.LocalDateTime;
 import java.util.Comparator;
@@ -21,12 +29,40 @@ import static at.feedback_service.testutil.TestConstants.*;
 import static at.feedback_service.testutil.TestData.*;
 import static at.feedback_service.testutil.TestUtils.compareCourseInfo;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+import static org.springframework.web.reactive.function.BodyInserters.fromFormData;
 
 @AutoConfigureMockMvc
 class FeedbackControllerTest extends BaseIntegrationTest {
+    private static final KeycloakContainer KEYCLOAK = new KeycloakContainer("quay.io/keycloak/keycloak:24.0")
+            .withRealmImportFile("/cloud-java-realm.json");
+
+    static {
+        KEYCLOAK.start();
+    }
+
+    @DynamicPropertySource
+    static void registerProperties(DynamicPropertyRegistry registry) {
+        registry.add("spring.security.oauth2.resourceserver.jwt.issuer-uri", () -> KEYCLOAK.getAuthServerUrl() + "/realms/cloud-java");
+        registry.add("spring.security.oauth2.resourceserver.jwt.jwk-set-uri", () -> KEYCLOAK.getAuthServerUrl() + "/realms/cloud-java/protocol/openid-connect/certs");
+    }
+
+    private static AuthToken ADMIN;
+    private static AuthToken USER_NO_FEEDBACKS;
+    private static AuthToken USER_WITH_FEEDBACKS;
 
     @Autowired
     private WebTestClient webTestClient;
+
+    @BeforeAll
+    static void setup() {
+        WebClient webClient = WebClient.builder()
+                .baseUrl(KEYCLOAK.getAuthServerUrl() + "/realms/cloud-java/protocol/openid-connect/token")
+                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+                .build();
+        ADMIN = createToken(webClient, ADMIN_NAME, "password");
+        USER_NO_FEEDBACKS = createToken(webClient, USER_NO_FEEDBACKS_NAME, "password");
+        USER_WITH_FEEDBACKS = createToken(webClient, USER_NAME, "password");
+    }
 
     @Test
     void getRatingsOfCourses_returnsCorrectRatings_whenSomeCoursesHaveFeedback() {
@@ -139,10 +175,27 @@ class FeedbackControllerTest extends BaseIntegrationTest {
     }
 
     @Test
+    void getFeedbacksOfUser_returnsForbidden_whenUserHasNoRights() {
+        webTestClient.get()
+                .uri(BASE_URL + "/my?" + "from=0&size=10&sortBy=date_asc")
+                .headers(h -> h.setBearerAuth(ADMIN.getAccessToken()))
+                .exchange()
+                .expectStatus().isForbidden();
+    }
+
+    @Test
+    void getFeedbacksOfUser_returns401_whenUserNotAuthenticated() {
+        webTestClient.get()
+                .uri(BASE_URL + "/my?" + "from=0&size=10&sortBy=date_asc")
+                .exchange()
+                .expectStatus().isUnauthorized();
+    }
+
+    @Test
     void getFeedbacksOfUser_returnsCorrectList_whenUserHasFeedbacks() {
         webTestClient.get()
                 .uri(BASE_URL + "/my?" + "from=0&size=10&sortBy=date_asc")
-                .header(FeedbackController.USER_HEADER, USER_NAME)
+                .headers(h -> h.setBearerAuth(USER_WITH_FEEDBACKS.getAccessToken()))
                 .exchange()
                 .expectStatus().isOk()
                 .expectBodyList(FeedbackResponse.class)
@@ -155,10 +208,9 @@ class FeedbackControllerTest extends BaseIntegrationTest {
 
     @Test
     void getFeedbacksOfUser_returnsEmptyList_whenUserHasNoFeedbacks() {
-        String userWithNoFeedbacks = "Unknown user";
         webTestClient.get()
                 .uri(BASE_URL + "/my?" + "from=0&size=10&sortBy=date_asc")
-                .header(FeedbackController.USER_HEADER, userWithNoFeedbacks)
+                .headers(h -> h.setBearerAuth(USER_NO_FEEDBACKS.getAccessToken()))
                 .exchange()
                 .expectStatus().isOk()
                 .expectBodyList(FeedbackResponse.class)
@@ -196,39 +248,77 @@ class FeedbackControllerTest extends BaseIntegrationTest {
     }
 
     @Test
-    void createFeedback_createsFeedback() {
+    void createFeedback_returnsUnauthorized_whenUserNotAuthenticated() {
         var request = createFeedbackRequest(COURSE_ONE, 5);
-        var username = "Alex";
+
+        webTestClient.post()
+                .uri(BASE_URL)
+                .accept(MediaType.APPLICATION_JSON)
+                .bodyValue(request)
+                .exchange()
+                .expectStatus().isUnauthorized();
+    }
+
+    @Test
+    void createFeedback_returnsForbidden_whenUserHasNoRights() {
+        var request = createFeedbackRequest(COURSE_ONE, 5);
+
+        webTestClient.post()
+                .uri(BASE_URL)
+                .headers(h -> h.setBearerAuth(ADMIN.getAccessToken()))
+                .accept(MediaType.APPLICATION_JSON)
+                .bodyValue(request)
+                .exchange()
+                .expectStatus().isForbidden();
+    }
+
+    @Test
+    void createFeedback_createsFeedback_whenUserAuthenticatedAndAuthorized() {
+        var request = createFeedbackRequest(COURSE_ONE, 5);
+        var username = USER_NO_FEEDBACKS_NAME;
 
         LocalDateTime now = LocalDateTime.now().minusNanos(1000);
 
         webTestClient.post()
                 .uri(BASE_URL)
-                .header(FeedbackController.USER_HEADER, username)
+                .headers(h -> h.setBearerAuth(USER_NO_FEEDBACKS.getAccessToken()))
                 .accept(MediaType.APPLICATION_JSON)
                 .bodyValue(request)
                 .exchange()
                 .expectStatus().isCreated()
                 .expectBody(FeedbackResponse.class)
                 .value(response -> {
-                    assertThat(response.getId()).isNotNull();
-                    assertThat(response.getCourseId()).isEqualTo(request.getCourseId());
-                    assertThat(response.getCreatedBy()).isEqualTo(username);
-                    assertThat(response.getRate()).isEqualTo(request.getRate());
-                    assertThat(response.getCreatedAt()).isAfter(now);
+                    AssertionsForClassTypes.assertThat(response.getId()).isNotNull();
+                    AssertionsForClassTypes.assertThat(response.getCourseId()).isEqualTo(request.getCourseId());
+                    AssertionsForClassTypes.assertThat(response.getCreatedBy()).isEqualTo(username);
+                    AssertionsForClassTypes.assertThat(response.getRate()).isEqualTo(request.getRate());
+                    AssertionsForClassTypes.assertThat(response.getCreatedAt()).isAfter(now);
                 });
     }
 
     @Test
     void createFeedback_returnsConflictWhenUserTriesToSendSecondFeedbackToSameCourse() {
-        var request = createFeedbackRequest(COURSE_ONE, 5);
+        var request = createFeedbackRequest(COURSE_FIVE, 5);
 
         webTestClient.post()
                 .uri(BASE_URL)
-                .header(FeedbackController.USER_HEADER, USER_ONE)
+                .headers(h -> h.setBearerAuth(USER_WITH_FEEDBACKS.getAccessToken()))
                 .accept(MediaType.APPLICATION_JSON)
                 .bodyValue(request)
                 .exchange()
                 .expectStatus().isEqualTo(HttpStatus.CONFLICT);
+    }
+
+    private static AuthToken createToken(WebClient webClient, String username, String password) {
+        return webClient.post()
+                .body(fromFormData("grant_type", "password")
+                        .with("client_id", "cloud-java-gateway")
+                        .with("username", username)
+                        .with("password", password)
+                        .with("client_secret", "RleFn4MVPDKtGTXIZv4Opyfuwfx2fFLL")
+                )
+                .retrieve()
+                .bodyToMono(AuthToken.class)
+                .block();
     }
 }

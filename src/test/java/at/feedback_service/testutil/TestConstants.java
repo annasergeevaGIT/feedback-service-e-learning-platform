@@ -21,11 +21,13 @@ public class TestConstants {
     public static final String COMMENT_ONE = "CommentOne";
     public static final Integer RATE_FIVE = 5;
     public static final LocalDateTime FEEDBACK_DATE = LocalDateTime.of(2024, Month.MARCH, 14, 10, 23, 54);
-    public static final String USER_NAME = "Username";
+    public static final String USER_NAME = "jane";
     public static final LocalDateTime FEEDBACK_DATE_COURSE_4 = LocalDateTime.of(2024, Month.MARCH, 14, 11, 23, 54);
     public static final LocalDateTime FEEDBACK_DATE_COURSE_5 = LocalDateTime.of(2024, Month.MARCH, 15, 12, 23, 54);
     public static final LocalDateTime FEEDBACK_DATE_COURSE_6 = LocalDateTime.of(2024, Month.MARCH, 16, 13, 23, 54);
     public static final LocalDateTime FEEDBACK_DATE_COURSE_7 = LocalDateTime.of(2024, Month.MARCH, 17, 14, 23, 54);
     public static final LocalDateTime FEEDBACK_DATE_COURSE_8 = LocalDateTime.of(2024, Month.MARCH, 18, 15, 23, 54);
+    public static final String ADMIN_NAME = "alex";
+    public static final String USER_NO_FEEDBACKS_NAME = "max";
 
 }

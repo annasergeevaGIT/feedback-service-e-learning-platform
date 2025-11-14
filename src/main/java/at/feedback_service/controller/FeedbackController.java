@@ -17,6 +17,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,8 +29,8 @@ import java.util.List;
 @RequestMapping("/v1/feedbacks")
 @RequiredArgsConstructor
 public class FeedbackController {
-    public static final String USER_HEADER = "X-User-Name";
 
+    private static final String USERNAME_CLAIM = "preferred_username";
     private final FeedbackService feedbackService;
     private final RatingService ratingService;
 
@@ -57,9 +59,8 @@ public class FeedbackController {
     public FeedbackResponse createFeedback(@RequestBody
                                        @Valid
                                        CreateFeedbackRequest request,
-                                       @RequestHeader(USER_HEADER)
-                                       @NotBlank(message = "Username can not be empty")
-                                       String username) {
+                                           @AuthenticationPrincipal Jwt jwt) {
+        var username = jwt.getClaimAsString(USERNAME_CLAIM);
         log.info("Received POST request to create Feedback: {} by user: {}",
                 request, username);
         return feedbackService.createFeedback(request, username);
@@ -105,9 +106,7 @@ public class FeedbackController {
                     ))
     })
     @GetMapping("/my")
-    public List<FeedbackResponse> getFeedbacksOfUser(@RequestHeader(USER_HEADER)
-                                                 @NotBlank(message = "Username can not be empty")
-                                                 String username,
+    public List<FeedbackResponse> getFeedbacksOfUser(@AuthenticationPrincipal Jwt jwt,
                                                  @RequestParam(value = "from", defaultValue = "0")
                                                  @PositiveOrZero(message = "Page must be >= 0")
                                                  int from,
@@ -117,6 +116,7 @@ public class FeedbackController {
                                                  @RequestParam(value = "sortBy", defaultValue = "date_asc")
                                                  @NotBlank(message = "Sorting parameter must not be empty")
                                                  String sortBy) {
+        var username = jwt.getClaimAsString(USERNAME_CLAIM);
         log.info("Received request to GET list of Feedbacks made by user: {}", username);
         return feedbackService.getFeedbackOfUser(username, SortBy.fromString(sortBy), from, size);
     }
